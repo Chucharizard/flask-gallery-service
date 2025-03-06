@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}Galería de Imágenes - Inicio{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">Galería de Imágenes</h1>
+                <p class="col-md-8 fs-4">
+                    Bienvenido a nuestra galería de imágenes. Aquí puedes ver las mismas imágenes que son gestionadas 
+                    por la aplicación WPF de escritorio.
+                </p>
+                <p>
+                    Esta aplicación web muestra cómo se puede integrar una aplicación de escritorio WPF con C# con 
+                    una aplicación web utilizando Flask y Node.js para compartir los mismos recursos.
+                </p>
+                <div class="mt-4">
+                    <a href="{{ url_for('web_gallery') }}" class="btn btn-primary btn-lg">
+                        <i class="bi bi-images"></i> Ver Galería
+                    </a>
+                    <a href="{{ url_for('web_upload') }}" class="btn btn-success btn-lg ms-2">
+                        <i class="bi bi-cloud-upload"></i> Subir Imagen
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if images %}
+<div class="row mt-4">
+    <div class="col-md-12">
+        <h2>Imágenes recientes</h2>
+        <hr>
+    </div>
+</div>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for image in images[:6] %}
+    <div class="col">
+        <div class="card h-100 shadow-sm gallery-item">
+            <img src="{{ image.path }}" class="card-img-top" alt="{{ image.title }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ image.title }}</h5>
+                <p class="card-text">{{ image.description or 'Sin descripción' }}</p>
+            </div>
+            <div class="card-footer bg-transparent">
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">{{ image.upload_date }}</small>
+                    <a href="{{ url_for('web_image_detail', image_id=image.id) }}" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-eye"></i> Ver Detalles
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% if images|length > 6 %}
+<div class="text-center mt-4">
+    <a href="{{ url_for('web_gallery') }}" class="btn btn-outline-primary">
+        <i class="bi bi-grid-3x3-gap"></i> Ver todas las imágenes ({{ images|length }})
+    </a>
+</div>
+{% endif %}
+{% else %}
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="alert alert-info" role="alert">
+            <i class="bi bi-info-circle"></i> No hay imágenes disponibles. ¡Sé el primero en subir una!
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="row mt-5">
+    <div class="col-md-12">
+        <h2>¿Cómo funciona?</h2>
+        <hr>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body text-center">
+                <h1><i class="bi bi-window"></i></h1>
+                <h5 class="card-title">Aplicación WPF</h5>
+                <p class="card-text">Una aplicación de escritorio desarrollada en C# con WPF que permite gestionar imágenes.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body text-center">
+                <h1><i class="bi bi-server"></i></h1>
+                <h5 class="card-title">API Node.js</h5>
+                <p class="card-text">Una API REST desarrollada con Node.js que sirve como punto de acceso para ambas aplicaciones.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body text-center">
+                <h1><i class="bi bi-database"></i></h1>
+                <h5 class="card-title">Flask con SQLite</h5>
+                <p class="card-text">Un backend en Flask que maneja el almacenamiento persistente de imágenes en SQLite.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Galería de Imágenes{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+    <style>
+        .card-img-top {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .gallery-item {
+            transition: transform 0.3s;
+        }
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+        .footer {
+            margin-top: 3rem;
+            padding: 2rem 0;
+            background-color: #f8f9fa;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('web_index') }}">
+                <i class="bi bi-images"></i> Galería WPF-Flask
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{{ url_for('web_index') }}">
+                            <i class="bi bi-house-door"></i> Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/gallery' %}active{% endif %}" href="{{ url_for('web_gallery') }}">
+                            <i class="bi bi-grid-3x3-gap"></i> Galería
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/upload' %}active{% endif %}" href="{{ url_for('web_upload') }}">
+                            <i class="bi bi-cloud-upload"></i> Subir Imagen
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost:3000/api/images" target="_blank">
+                            <i class="bi bi-code-slash"></i> API JSON
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Content -->
+    <main class="container my-4 main-container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Galería WPF-Flask</h5>
+                    <p>Una integración entre aplicaciones WPF en C#, Node.js y Flask.</p>
+                </div>
+                <div class="col-md-3">
+                    <h5>Enlaces</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('web_index') }}">Inicio</a></li>
+                        <li><a href="{{ url_for('web_gallery') }}">Galería</a></li>
+                        <li><a href="{{ url_for('web_upload') }}">Subir Imagen</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>API</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="http://localhost:3000" target="_blank">Node.js API</a></li>
+                        <li><a href="http://localhost:5000/api" target="_blank">Flask API</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <p>&copy; 2023 Galería WPF-Flask. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
