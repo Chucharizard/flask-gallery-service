@@ -118,3 +118,31 @@ function updateGalleryInRealtime() {
     // la galería en tiempo real cuando nuevas imágenes sean añadidas
     console.log('Actualización en tiempo real preparada para implementación futura');
 }
+
+
+
+
+
+
+// Fix for iOS Safari 100vh issue
+function setVhVariable() {
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+// Set initially and on resize
+setVhVariable();
+window.addEventListener('resize', setVhVariable);
+
+// Add auto-dark-mode class if user prefers dark mode
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  document.body.classList.add('auto-dark-mode');
+}
+
+// Optional: Track dark mode changes
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+  document.body.classList.toggle('auto-dark-mode', event.matches);
+});
+
+// Improve touch performance on mobile - prevent 300ms delay
+document.addEventListener('touchstart', function() {}, {passive: true});
