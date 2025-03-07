@@ -124,6 +124,9 @@ function updateGalleryInRealtime() {
 
 
 
+
+
+
 // Fix for iOS Safari 100vh issue
 function setVhVariable() {
   let vh = window.innerHeight * 0.01;
@@ -144,5 +147,33 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', eve
   document.body.classList.toggle('auto-dark-mode', event.matches);
 });
 
-// Improve touch performance on mobile - prevent 300ms delay
+// Improve touch performance on mobile
 document.addEventListener('touchstart', function() {}, {passive: true});
+
+// Add floating action button for upload on mobile
+document.addEventListener('DOMContentLoaded', function() {
+  // Only show on mobile screens
+  if (window.innerWidth < 768) {
+    const uploadFab = document.createElement('a');
+    uploadFab.href = '/upload'; // Use the correct upload URL
+    uploadFab.className = 'upload-fab';
+    uploadFab.innerHTML = '<i class="bi bi-plus-lg"></i>';
+    uploadFab.setAttribute('aria-label', 'Upload New Image');
+    document.body.appendChild(uploadFab);
+  }
+  
+  // Add staggered animation classes
+  document.querySelectorAll('.card').forEach(card => {
+    card.classList.add('stagger-item');
+  });
+  
+  // Add floating animation to some icons
+  document.querySelectorAll('.card-body h1 i').forEach(icon => {
+    icon.classList.add('float');
+  });
+  
+  // Make gallery images have a reveal effect
+  document.querySelectorAll('.gallery-item img').forEach(img => {
+    img.classList.add('image-reveal');
+  });
+});touchstart', function() {}, {passive: true});
